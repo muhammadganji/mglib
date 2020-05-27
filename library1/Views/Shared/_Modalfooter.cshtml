@@ -1,0 +1,11 @@
+﻿@model library1.PublicModel.Modalfooter
+
+<div class=" modal-footer">
+    <button class="btn btn-back" type="button" data-dismiss="modal" id="@Model.CancelButtonID">@Model.CancelButtonText</button>
+    @if (!Model.OnlyCancelButton)
+    {
+        <button class="btn btn-submit" type="submit" id="@Model.SubmitButtonID">
+            @Model.SubmitButtonText
+        </button>
+    }
+</div>

@@ -1,0 +1,21 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "خطا رخ داده";
+}
+
+<div class="div-cart">
+    <h1 class="text-danger title-bold">خطایی در سیستم رخ داده</h1>
+    <h2 class="text-danger title-medium">برای اجرای درخواست شما، یک خطا رخ داده است</h2>
+
+    @if (Model.ShowRequestId)
+    {
+        <p>
+            <strong class="title-small">شناسه خطا:</strong> <code>@Model.RequestId</code>
+        </p>
+    }
+
+    <p class="title-item">
+        لطفا مجدد درخواست دهید
+    </p>
+
+</div>

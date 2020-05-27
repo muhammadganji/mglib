@@ -1,0 +1,195 @@
+﻿@model library1.Models.ViewModel.MultiModels
+
+@{
+    ViewData["Title"] = "کتابخونه";
+}
+
+@section seachSection{
+    <form class="formSearch form-inline text-right title-small col-lg-6 col-md-6 col-sm-8 col-xs-12 text-center" style="margin-top:10px; margin-right:20px;margin-left:20px; ">
+        <div class="row">
+            <input name="searchType" id="searchType" type="text" class="form-control-static col-lg-8 col-xs-9 col-sm-10 col-md-10" placeholder="کتاب  ...">
+            @*<input type="search" class="form-control-static col-lg-8 col-xs-10" placeholder="کتاب ... خبر ... کاربر ...">*@
+            <button asp-action="Search" asp-controller="Home"
+                    class="form-control-static btn-submit pull-right col-lg-1 col-md-1 col-sm-1 col-xs-2" style="border-radius: 0px;padding-left:5px;padding-right:5px; margin:0px; min-width:65px; height:36px;">
+                <span>جستجو</span>
+            </button>
+        </div>
+    </form>
+}
+
+
+
+
+
+@inject SignInManager<ApplicationUser> _signInManager
+@inject UserManager<ApplicationUser> _userManager
+
+@section menuSection{
+    @using Microsoft.AspNetCore.Identity
+    @using library1.Models
+    @using library1.PublicModel
+
+
+    @if (_signInManager.IsSignedIn(User))
+    {
+        // is signed in
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4" style="margin-top:10px; width:164px;">
+            <div class="pull-right">
+                <a class="btn btn-back" style="border-radius: 0px;padding-left:5px;padding-right:5px; margin:0px; min-width:42px; height:36px;" asp-area="" asp-controller="Home" asp-action="GoToPanel">
+                    پنل کاربری
+                    <!--<span class=" glyphicon glyphicon-home" aria-hidden="true" />-->
+                </a>
+            </div>
+            <div class="pull-left">
+                <form asp-action="LogOut" asp-controller="Account" method="post">
+                    <input type="submit" value="خروج" class="btn btn-back" style="border-radius: 0px;padding-left:5px;padding-right:5px; margin:0px; min-width:42px; height:36px;" />
+                </form>
+            </div>
+
+
+
+        </div>
+    }
+    else
+    {
+        // is log out
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" style="margin-top:10px;">
+            <a class="form-control-static btn-back pull-right col-lg-1 col-md-1 col-sm-1 col-xs-2" style="border-radius: 0px;padding-left:5px;padding-right:5px; margin:0px; min-width:100px; height:36px;" asp-area="" asp-controller="Account" asp-action="Login">
+                ورود | عضویت
+            </a>
+
+
+        </div>
+
+    }
+}
+
+<div id="main-div" class="container">
+
+    <div id="main-content" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
+        <div class="row">
+
+
+        </div>
+        @if (_signInManager.IsSignedIn(User))
+        {
+            <div>
+                @Html.Partial("_Basket_borrow", Model._SliderLastBook)
+            </div>
+        }
+        <div class="div-cart">
+            @Html.Partial("_sliderLastBook", Model._SliderLastBook)
+        </div>
+
+        <div class="div-cart">
+            @Html.Partial("_lastMoreVisit", Model._LastMoreVisit)
+        </div>
+
+        <div class="div-cart">
+            @Html.Partial("_lastComment")
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 div-cart ">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                @Html.Partial("_lastBook", Model.moreViewBook)
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                @Html.Partial("_lastNews", Model._LastNews)
+            </div>
+        </div>
+
+
+
+    </div>
+
+</div>
+
+@section footerSection{
+    <style>
+        /*footer*/
+        .list-footer {
+            list-style: none;
+            padding-top: 8px;
+            font-size: 12px;
+            line-height: 25px;
+        }
+
+        .break-black {
+            border-top: 2px solid rgba(50, 58, 52, 0.36) !important;
+            margin-bottom: 8px;
+            margin-top: 4px !important;
+        }
+
+        .badge {
+            color: #cacaca;
+            background-color: #323a34;
+        }
+
+        .div-footer {
+            /*border: 1px solid rgba(128, 128, 128,0.3);*/
+            border-radius: 2px;
+            margin: 0px !important;
+            padding: 0px;
+        }
+    </style>
+
+    <div>
+        <div id="" class="div-footer row col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block text-center" style="background-color: #a4a4a4 !important; padding-top:5px;">
+            <div class="container center-block">
+
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <span class="text-bold">
+                        آخرین تغییرات (6)
+                    </span>
+                    <hr class="break-black" />
+                    <div class="text-small">
+                        <ul class="list-footer">
+                            <li> <span>احراز هویت Role based<span class="badge">دی 98</span></span> </li>
+                            <li> <span>پنل ادمین     <span class="badge">بهمن 98</span></span> </li>
+                            <li> <span>پنل کاربر    <span class="badge">اسفند 98</span></span> </li>
+                            <li> <span>درگاه بانک    <span class="badge">اسفند 98</span></span> </li>
+                            <li> <span>احراز هویت Claim based<span class="badge">فروردین 99</span></span> </li>
+                            <li> <span>احراز هویت OTP<span class="badge">اردیبهشت 99</span></span> </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <span class="text-bold">
+                        در آینده (3)
+                    </span>
+                    <hr class="break-black" />
+                    <div class="text-small">
+                        <ul class="list-footer">
+                            <li> <span>بازیابی حساب ایمیل<span class="badge">...</span></span> </li>
+                            <li> <span>بازیابی حساب با موبایل<span class="badge">...</span></span> </li>
+                            <li> <span>آپلود در گیت هاب<span class="badge">...</span></span> </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+
+                    <div class="text-small">
+
+                        <ul class="list-footer">
+                            <li> <img style="height:51px;" class="img-thumbnail" src="~/images/zarinpal.png" /></li>
+                            <li> <img style="height:51px;" class="img-thumbnail" src="~/images/avanak.png" /></li>
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="div-footer row " style="background-color:#545454; color:#d3d3d3; padding:5px;">
+                <span class="text-small">
+                    1398-1399 داستان ما از اینجا شروع شد -
+                </span>
+                <a class="text-small" href="https://jobinja.ir/user/XW-4894855">رزومه برنامه نویس</a>
+            </div>
+        </div>
+
+    </div>
+}

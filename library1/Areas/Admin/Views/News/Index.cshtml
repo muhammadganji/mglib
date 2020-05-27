@@ -1,0 +1,199 @@
+﻿@using library1.PublicModel @* for AreaLabel ID, Size *@
+@model ReflectionIT.Mvc.Paging.PagingList<library1.Models.News>
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, library1
+@{
+    ViewData["Title"] = "اخبار و اطلاعیه";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/js/persian_date_picker/jquery.Bootstrap-PersianDateTimePicker.css" rel="stylesheet" />
+
+<div>
+    @Html.Partial("_adminpanel")
+</div>
+
+<div class="col-md-9">
+    <div class="top-buffer"></div>
+    <div class="panel div-cart">
+
+        @* https://www.codeproject.com/Articles/858123/Bootstrap-Persian-DateTimePicker *@
+        <div class="panel-heading" style="border:0px; margin:0 !important; padding-bottom:1px;">
+            <div class="col-md-3 title-medium">ليست خبر</div>
+
+            <form method="post" asp-controller="News" asp-action="SearchInNews" class="form-horizontal">
+                <div class="form-group">
+                    <div class="input-group col-md-2 pull-right">
+                        <div class="input-group-addon" data-MdDateTimePicker="true" data-trigger="click" data-targetselector="#fromDate1" data-groupid="group1" data-fromdate="true" data-enabletimepicker="false" data-placement="left">
+                            <span class="glyphicon glyphicon-calendar" style=" height:14px;"></span>
+                        </div>
+                        <input type="text" class="form-control title-small" style="margin-right:0px; height:36px; padding-left:7px; padding-right:7px;" id="fromDate1" name="fromDate1" placeholder="از تاريخ" data-MdDateTimePicker="true" data-trigger="click" data-targetselector="#fromDate1" data-groupid="group1" data-fromdate="true" data-enabletimepicker="false" data-placement="right" />
+                    </div>
+
+                    <div class="input-group col-md-2 pull-right">
+                        <div class="input-group-addon" data-MdDateTimePicker="true" data-trigger="click" data-targetselector="#todate1">
+                            <span class="glyphicon glyphicon-calendar" style="margin-right:0px; height:14px; "></span>
+                        </div>
+                        <input type="text" class="form-control title-small" style="margin-right:0px; height:36px; padding-left:7px; padding-right:7px;" id="todate1" name="todate1" placeholder="تا تاريخ" data-MdDateTimePicker="true" data-placement="right" />
+                    </div>
+
+
+                    <div class="group-btn col-md-2 pull-left">
+                        <button class="btn btn-default title-small" style="height:36px; width:96px;" type="submit">جستجو</button>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="searchnews" name="searchnews" class="form-control title-small" style="padding-right:7px;padding-left:7px;" placeholder=" عنوان خبر ..متن خبر ..." />
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <hr class="break" />
+        <div class="panel-body">
+            <div class="btn-group">
+
+
+                <a class="btn btn-submit" id="showNews" data-toggle="modal" asp-action="AddEditNews"
+                   data-target="#modal-action-news">
+                    افزودن مطلب
+                </a>
+
+
+            </div>
+
+            <div></div>
+            <table class="table table-bordered table-striped table-condensed>">
+                <thead>
+                    <tr>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.newTitle)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.newsDate)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.newsImage)</th>
+                        <th class="title-small">پردازش</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--Check null refrenced for Model-->
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="title-small">@item.newTitle</td>
+                                <td class="title-small">@item.newsDate</td>
+                                <td class="title-small">
+                                    @if (item.newsImage != null)
+                                    {
+                                        <img src="@ViewBag.RootPath@item.newsImage" class="img-bit img-thumbnail" />
+                                    }
+                                    else
+                                    {
+                                        // default image
+                                        <img src="~/images/img01.png" class="img-bit img-thumbnail" />
+                                    }
+                                </td>
+                                <td>
+
+                                    <a class="btn btn-edit" id="showEditNews" data-toggle="modal" asp-action="AddEditNews"
+                                       asp-route-id="@item.NewsId"
+                                       data-target="#modal-action-news">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                    </a>
+
+                                    <a class="btn btn-cancel" id="showDeleteNews" data-toggle="modal" asp-action="DeleteNews"
+                                       asp-route-id="@item.NewsId"
+                                       data-target="#modal-action-news">
+                                        <i class="glyphicon glyphicon-remove"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+
+
+                </tbody>
+
+
+            </table>
+
+            <nav class="text-center">
+                @await this.Component.InvokeAsync("Pager", new { PagingList = this.Model })
+            </nav>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+    <script src="~/lib/modal-js/news-index.js"></script>
+    <script src="~/js/ckeditor/ckeditor.js"></script>
+
+    <script src="~/js/myScript/menu panel admin.js"></script>
+
+    <script src="~/js/persian_date_picker/calendar.js"></script>
+    <script src="~/js/persian_date_picker/jquery.Bootstrap-PersianDateTimePicker.js"></script>
+    @*   ارسال اطلاعات به سمت سرور   *@
+    <script>
+
+        $(document).on('click', '#submitdate', function (evt) {
+            evt.preventDefault();
+
+            // متغیر برای ارسال فایل به سمت سرور
+            var data = new FormData();
+
+            // دریافت مقادیر فایل آپلودی
+            var fileupload = $("#files").get(0);
+            var files = fileupload.files;
+
+            for (var i = 0; i < files.length; i++) {
+                data.append('files', files[i]);
+
+            }
+
+            // دریافت مقادیر موجود به همراه نام آنها
+            $('input').each(function (index,filds) {
+                data.append($(filds).attr('name'), $(filds).val());
+            });
+
+            // دریافت مقدار ادیتور
+            var editorval = CKEDITOR.instances['newsConten'].getData();
+            data.append('newsConten', editorval);
+
+            // ارسال به کمک ایجکس
+            $.ajax({
+                type: "post",
+                url: '@Url.Action("AddEditNews", "News",new { area = "Admin"})',
+                contentType: false,
+                processData: false,
+                data: data
+            }).done(function (result) {
+                // نتیجه ریزالت توسط فایل جیسون ارسال میشود
+                // علت سه مساوی قرار دادن
+                // 1 باید مقدار مساوی موفقیت داشته باشد
+                //2 مقدار آن نیز که نوع رشته می باشد نیز چک باشد
+                if (result.status === "success") {
+                    //alert(result.message)
+                    //دیگر نیازی به متغیر redirectUrl نداریم چون از همین جا میتونیم کنترل نمایم
+
+                    window.location.href = '@Url.Action("Index","News")';
+                }
+                else {
+                    // Display error message all of t
+                    alert(result.error);
+                    // Display error message one by one
+                    //$.each(result.error, function (index, message) {
+                    //    alert(message);
+                    //});
+                }
+
+            }).fail(function (xhr, b, error) {
+                alert(error);
+            })
+
+        });
+
+
+    </script>
+}
+@* modal *@
+@Html.Partial("_Modal", new BootstrapModel { ID = "modal-action-news", AreaLabeledId = "", Size = ModalSize.Large })

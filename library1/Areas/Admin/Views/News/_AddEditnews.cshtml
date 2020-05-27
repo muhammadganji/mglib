@@ -1,0 +1,116 @@
+﻿@using library1.PublicModel
+@model library1.Models.News
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, library1
+
+
+<form method="post" enctype="multipart/form-data">
+    @*asp-action="AddEditBook" asp-controller="Book"
+        id="addeditbook" data-ajax="true" data-ajax-method="POST"
+        data-ajax-update="#addeditbook" data-ajax-mode="replace"*@
+
+    @* header *@
+    @if (Model.NewsId == 0)
+    {
+        @await Html.PartialAsync("_Modalheader", new ModelHeader { Header = "افزودن اطلاعیه" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_Modalheader", new ModelHeader { Header = "ویرایش اطلاعیه" })
+    }
+
+
+    @* body *@
+    <div class="modal-body form-horizontal">
+        <div class="row">
+
+            <div class="form-group">
+                <label asp-for="newTitle" class="col-lg-2 col-sm-2 control-label title-small"></label>
+                <div class="col-lg-6">
+                    <input asp-for="newTitle" class="form-control title-medium" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="newsConten" class="col-lg-2 col-sm-2 control-label title-small"></label>
+                <div class="col-lg-9">
+                    <textarea id="newsConten" name="newsConten" asp-for="newsConten" class="form-control title-medium"></textarea>
+                </div>
+                <script type="text/javascript">
+                    CKEDITOR.replace('newsConten');
+                </script>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="newsImage" class="col-lg-2 col-sm-2 control-label title-small"></label>
+                <div class="col-lg-6">
+
+                    <input asp-for="newsImage" type="file" id="files" name="files" multiple class="form-control" />
+
+                    @if (Model.NewsId != 0)
+                    {
+                        <input type="hidden" name="ImgName" value="@Model.newsImage" />
+
+                    }
+
+                </div>
+                <div class="col-lg-3">
+                    @if (Model.newsImage != null)
+                    {
+                        <img src="@ViewBag.RootPath@Model.newsImage" class="img-bit img-thumbnail" />
+                    }
+                    else
+                    {
+                        // default image
+                        <img src="~/images/img01.png" class="img-bit img-thumbnail" />
+                    }
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="newsDate" class="col-lg-2 col-sm-2 control-label title-small"></label>
+                <div class="col-lg-6">
+                    @if (Model.NewsId != 0)
+                    {
+                        <input asp-for="newsDate" class="form-control title-medium" />
+                    }
+                    else
+                    {
+                        <input asp-for="newsDate" class="form-control title-medium" value="@ViewBag.sdate" />
+                    }
+                </div>
+            </div>
+
+            <input asp-for="NewsId" class="hidden" />
+
+
+        </div>
+    </div>
+
+    @* footer *@
+    @if (Model.NewsId == 0)
+    {
+        <div class="modal-footer">
+            <button class="btn btn-back" type="button" data-dismiss="modal">برگشت</button>
+
+            <input type="button" id="submitdate" class="btn btn-submit" value="ثبت" />
+        </div>
+        @*@await Html.PartialAsync("_Modalfooter", new Modalfooter { SubmitButtonText = "ثبت", OnlyCancelButton = false })*@
+    }
+    else
+    {
+
+        <div class="modal-footer">
+            <button class="btn btn-back" type="button" data-dismiss="modal">برگشت</button>
+
+            <input type="button" id="submitdate" class="btn btn-submit" value="بروزرسانی" />
+        </div>
+        @*@await Html.PartialAsync("_Modalfooter", new Modalfooter { SubmitButtonText = "بروز رسانی", OnlyCancelButton = false })*@
+    }
+
+</form>
+
+
+@section Scripts{
+}

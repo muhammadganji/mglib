@@ -1,0 +1,64 @@
+﻿@*
+    گروه کودکان
+*@
+@model IEnumerable< library1.Models.ViewModel.BookListViewModel>
+
+
+<div id="dv-sliderLastBook">
+    <span class="cart-title">گروه کودکان</span>
+    <hr class="break-dash" />
+    <div class="owl-carousel owl-theme">
+        @foreach (var item in Model)
+        {
+
+            <div class="item">
+                <a asp-area="Admin" asp-controller="Book" asp-action="BookDetails" asp-route-id="@item.BookId" class="text-decoration-none text-center title-item">
+                    @if (item.BookImage != null)
+                    {
+                        <img src="@ViewBag.normalimage@item.BookImage" class="img-thumbnail" style="height" />
+                    }
+                    else
+                    {
+                        // default image
+                        <img src="~/images/cover book/default.jpg" class="img-thumbnail" />
+                    }
+                    @*<img src="@ViewBag.imageThumbnail@image" class="img-thumbnail" />*@
+                    <h5>@item.BookName</h5>
+                    <h6>@item.AuthorName</h6>
+                </a>
+            </div>
+
+
+
+
+        }
+
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        var owl = $('.owl-carousel');
+
+        owl.owlCarousel({
+            rtl: true,
+            margin: 10,
+            nav: true,
+            loop: false,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 3
+                },
+                1000: {
+                    items: 5
+                }
+            }
+        })
+    })
+</script>

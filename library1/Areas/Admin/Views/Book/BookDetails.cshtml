@@ -1,0 +1,249 @@
+﻿
+@{
+    ViewData["Title"] = "مشاهده کتاب";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model library1.Models.ViewModel.MultiModels
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, library1
+
+
+@inject SignInManager<ApplicationUser> _signInManager
+@inject UserManager<ApplicationUser> _userManager
+
+@section menuSection{
+    @using Microsoft.AspNetCore.Identity
+    @using library1.Models
+    @using library1.PublicModel
+
+
+    @if (_signInManager.IsSignedIn(User))
+    {
+        // is signed in
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4" style="margin-top:10px; width:164px;">
+
+            <div class="pull-right">
+                <a class="btn btn-back" style="border-radius: 0px;padding-left:5px;padding-right:5px; margin:0px; min-width:42px; height:36px;" asp-area="" asp-controller="Home" asp-action="GoToPanel">
+                    پنل کاربری
+                    <!--<span class=" glyphicon glyphicon-home" aria-hidden="true" />-->
+                </a>
+            </div>
+            <div class=" pull-left">
+                <form asp-action="LogOut" asp-controller="Account" asp-area="" method="post">
+                    <input type="submit" value="خروج" class="btn btn-back" style="border-radius: 0px;padding-left:5px;padding-right:5px; margin:0px; min-width:42px; height:36px;" />
+                </form>
+            </div>
+        </div>
+    }
+    else
+    {
+        // is log out
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" style="margin-top:10px;">
+            <a class="form-control-static btn-back pull-right col-lg-1 col-md-1 col-sm-1 col-xs-2" style="border-radius: 0px;padding-left:5px;padding-right:5px; margin:0px; min-width:42px; height:36px;" asp-area="" asp-controller="Account" asp-action="Login">
+                ورود
+            </a>
+
+
+        </div>
+
+    }
+}
+
+<div id="main-div" class="container">
+
+    <div id="main-content" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
+        @if (_signInManager.IsSignedIn(User))
+        {
+            <div class="row">
+                @Html.Partial("_Basket_borrow")
+
+
+            </div>
+        }
+
+        @foreach (var item in Model.BookDetail)
+        {
+
+            <div class="row div-cart">
+
+                <span class="cart-title">@item.BookName</span>
+                <hr class="break-dash" />
+
+                <div class="col-md-3 pull-right">
+                    @if (@item.Image != null)
+                    {
+                        <img src="@ViewBag.normalimage@item.Image" class="img-thumbnail" />
+                    }
+                    else
+                    {
+                        <img src="~/images/book01 (Custom).jpg" class="img-thumbnail" />
+
+                    }
+                </div>
+
+                <div class="col-md-8 title-medium">
+                    <span><span>@Html.DisplayNameFor(model => item.BookName) : </span>@item.BookName</span>
+                    <hr class="break" />
+                    <span><span>@Html.DisplayNameFor(model => item.AuthorName) : </span>@item.AuthorName</span>
+                    <hr class="break" />
+                    <span><span>@Html.DisplayNameFor(model => item.BookGroupName) : </span>@item.BookGroupName</span>
+                    <hr class="break" />
+                    <span><span>@Html.DisplayNameFor(model => item.PageNumber) : </span>@item.PageNumber</span>
+                    <hr class="break" />
+                    <span><span>@Html.DisplayNameFor(model => item.BookViews) : </span>@item.BookViews</span>
+                    <hr class="break" />
+                    <span><span>موجودی : </span>@item.BookStock</span>
+                    <hr class="break" />
+                    <span class="title-bold" style="color:lightseagreen"><span>@Html.DisplayNameFor(model => item.Price) : </span>@item.Price</span>
+                    <hr class="break" />
+
+                </div>
+                <br />
+                <div class="col-md-12 center-block">
+
+
+                    @if (_signInManager.IsSignedIn(User))
+                    {
+                        if (item.BookStock == 0)
+                        {
+                            <span class="title-medium">موجودی کتاب به پایان رسیده</span>
+                        }
+                        else
+                        {
+                            <a id="btnborrow" class="btn btn-success">به امانت بردن</a>
+                        }
+                    }
+                    else
+                    {
+                        <span class="title-small">برای امانت گرفتن وارد شوید</span>
+                        <a class="form-control-static btn-info pull-right col-lg-1 col-md-1 col-sm-1 col-xs-2" style="border-radius: 0px;padding-left:5px;padding-right:5px; margin:0px; min-width:42px; height:36px; text-align:center;" asp-area="" asp-controller="Account" asp-action="Login">
+                            ورود
+                        </a>
+                    }
+
+                    <span class="col-md-offset-1"></span>
+
+                    <a id="btnLike" class="btn btn-success glyphicon glyphicon-thumbs-up"></a>
+                    <span id="likecounter">@item.BookLikeCount</span>
+                    <a id="btnDisLike" class="btn btn-danger glyphicon glyphicon-thumbs-down"></a>
+
+                    <span class="hidden" id="BookId">@item.BookId</span>
+                </div>
+            </div>
+
+
+            <div class="row div-cart">
+                <span class="title-bold">@Html.DisplayNameFor(model => item.Description) : </span>
+                <span class="title-medium">@Html.Raw(item.Description)</span>
+            </div>
+        }
+
+        <div class="row div-cart">
+            @Html.Partial("_lastBook", Model.moreViewBook)
+        </div>
+
+
+    </div>
+
+</div>
+
+@section footerSection{
+
+<style>
+    .div-footer {
+        /*border: 1px solid rgba(128, 128, 128,0.3);*/
+        border-radius: 2px;
+        margin: 0px !important;
+        padding: 0px;
+    }
+</style>
+
+    <div class="div-footer text-center">
+        <div class="div-footer row " style="background-color:#545454; color:#d3d3d3; padding:5px;">
+            <span class="text-small">
+                1398-1399 داستان ما از اینجا شروع شد -
+            </span>
+            <a class="text-small" href="https://jobinja.ir/user/XW-4894855">رزومه برنامه نویس</a>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <script>
+        /*
+         * لایک کردن
+         */
+        $('#btnLike').on("click", function () {
+            var post_data = $("#BookId").text();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Like","Book")',
+                data: { 'Id': post_data },
+
+                success: function (msg) {
+                    if (msg.status === 'success') {
+                        //alert(msg.message);
+                        $('#likecounter').text(msg.result);
+                    }
+                }
+            });
+        });
+        /*
+         * دیس لایک کردن
+         */
+        $('#btnDisLike').on("click", function () {
+            var post_data = $("#BookId").text();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("DisLike","Book")',
+                data: { 'Id': post_data },
+
+                success: function (msg) {
+                    if (msg.status === 'success') {
+                        //alert(msg.message);
+                        $('#likecounter').text(msg.result);
+                    }
+                }
+            });
+        });
+
+        /*
+         * borrow the book
+         */
+        // true : prevent to request
+        var check_Borrow = false;
+        $('#btnborrow').on("click", function () {
+            if (check_Borrow) {
+                $('#btnborrow').text("در لیست شما موجود هست");
+                return null;
+            }
+            var post_data = $("#BookId").text();
+            // alert("test");
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Borrow","Book")',
+                data: { 'Id': post_data },
+
+                success: function (msg) {
+                    if (msg.statue === 'success') {
+                        $('#btnborrow').text("اضافه شد به لیست");
+                        $("#basketCount").text(msg.basket_count)
+                    }
+                    else if (msg.statue === 'fail') {
+                        $('#btnborrow').text("موجودی کتاب به پایان رسیده");
+                        $("#basketCount").text(msg.basket_count)
+                    }
+                    else if (msg.statue === "exist") {
+                        $('#btnborrow').text("در لیست شما موجود هست");
+                        $("#basketCount").text(msg.basket_count)
+                    }
+                    check_Borrow = true;
+                }
+
+            });
+        });
+
+    </script>
+}

@@ -1,0 +1,51 @@
+﻿@model IEnumerable<library1.Models.ViewModel.ManageRequestBookViewModel>
+@using library1.PublicModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, library1
+
+@if (ViewBag.PartialType == 1)
+{
+
+    <form asp-controller="ManageRequestBook" asp-action="RejectRequest">
+        @* Header *@
+        @await Html.PartialAsync("_Modalheader", new ModelHeader { Header = "رد درخواست امانت " })
+        @foreach (var item in Model)
+        {
+            <div class="modal-body form-horizontal title-small">
+                آیا از رد درخواست <span class="title-bold">@item.BookName</span>  به ناام <span class="title-bold">@item.UserName</span> مطمئن هستید ؟
+            </div>
+        }
+        @* Footer *@
+        @await Html.PartialAsync("_Modalfooter", new Modalfooter { SubmitButtonText = "رد درخواست", OnlyCancelButton = false })
+    </form>
+}
+else if (ViewBag.PartialType == 2)
+{
+    <form asp-controller="ManageRequestBook" asp-action="AcceptRequest">
+        @* Header *@
+        @await Html.PartialAsync("_Modalheader", new ModelHeader { Header = "تایید درخواست امانت " })
+        @foreach (var item in Model)
+        {
+            <div class="modal-body form-horizontal title-small">
+                آیا از تایید درخواست <span class="title-bold">@item.BookName</span>  به ناام <span class="title-bold">@item.UserName</span> مطمئن هستید ؟
+            </div>
+        }
+        @* Footer *@
+        @await Html.PartialAsync("_Modalfooter", new Modalfooter { SubmitButtonText = "تایید درخواست", OnlyCancelButton = false })
+    </form>
+}
+else if (ViewBag.PartialType == 3)
+{
+    <form asp-controller="ManageRequestBook" asp-action="GiveBackRequest">
+        @* Header *@
+        @await Html.PartialAsync("_Modalheader", new ModelHeader { Header = "تایید درخواست بازگرداندن " })
+        @foreach (var item in Model)
+        {
+            <div class="modal-body form-horizontal title-small">
+                آیا از تایید بازگرداندن کتاب <span class="title-bold">@item.BookName</span>  به ناام <span class="title-bold">@item.UserName</span> مطمئن هستید ؟
+            </div>
+        }
+        @* Footer *@
+        @await Html.PartialAsync("_Modalfooter", new Modalfooter { SubmitButtonText = "تایید درخواست", OnlyCancelButton = false })
+    </form>
+}

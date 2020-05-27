@@ -1,0 +1,93 @@
+﻿@using library1.PublicModel @* for AreaLabel ID, Size *@
+@model library1.Models.ViewModel.UserListViewModel
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, library1
+@{
+    ViewData["Title"] = "پروفایل من";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    @Html.Partial("_userpanel")
+</div>
+
+<div class="col-md-9">
+    <div class="top-buffer"></div>
+    <div class="panel div-cart">
+        <div class="panel-head title-medium">مشخصات من</div>
+        <hr class="break" />
+        <div class="panel-body">
+
+            <form asp-controller="UserProfile" asp-action="Profile" asp-area="User" method="post">
+
+                @if (ViewBag.changeSuccess != "")
+                {
+                    <div class="form-horizontal">
+                        <span class="title-medium " style="color:lightseagreen">@ViewBag.changeSuccess</span>
+                        <br />
+                        <br />
+                    </div>
+                }
+                @if (ViewBag.chanegeFailed != "")
+                {
+                    <div class="form-horizontal">
+                        <span class="title-medium " style="color:crimson">@ViewBag.chanegeFailed</span>
+                        <br />
+                        <br />
+                    </div>
+                }
+
+                <div class="row form-horizontal">
+                    <div class="form-group">
+                        <label asp-for="FirstName" class="col-lg-3 col-sm-3 control-label title-small"></label>
+                        <div class="col-lg-6">
+                            <input asp-for="FirstName" class="form-control title-medium" />
+                            <span asp-validation-for="FirstName" class="title-small"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LastName" class="col-lg-3 col-sm-3 control-label title-small"></label>
+                        <div class="col-lg-6">
+                            <input asp-for="LastName" class="form-control title-medium" />
+                            <span asp-validation-for="LastName" class="title-small"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber" class="col-lg-3 col-sm-3 control-label title-small"></label>
+                        <div class="col-lg-6">
+                            <input asp-for="PhoneNumber" class="form-control title-medium" />
+                            @if (Model.PhoneNumberConfirmed)
+                            {<span class="text-small" style="color:lightseagreen">تایید شده</span>}
+                            else
+                            { <span class="text-small" style="color:orangered">هنوز تایید نشده است</span> }
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="col-lg-3 col-sm-3 control-label title-small"></label>
+                        <div class="col-lg-6">
+                            <input asp-for="Email" class="form-control title-medium" />
+                            <span asp-validation-for="Email" class="title-small"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group" style="text-align:center;">
+                        <button type="submit" style="color:white; min-width:96px; height:32px;" class="btn btn-success title-medium ">بروزرسانی مشخصات</button>
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+    <script src="~/lib/modal-js/request-index.js"></script>
+    <script src="~/js/myScript/menu panel admin.js"></script>
+}
+@* modal *@
+@Html.Partial("_Modal", new BootstrapModel { ID = "modal-action-request", AreaLabeledId = "", Size = ModalSize.Medium })

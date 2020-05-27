@@ -1,0 +1,169 @@
+﻿@model library1.Models.ViewModel.LoginViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, library1
+@*@{
+        ViewData["Title"] = "نویسنده";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }*@
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-lg-6 div-cart">
+
+        <div class="panel-heading cart-title text-center">@ViewData["Wellcom"]</div>
+        <hr class="break-dash" />
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+
+            <li role="presentation" class="col-md-6 col-lg-6 col-sm-6 col-xs-6 text-center @(ViewBag.signin == "false"? "active" : "" )"><a href="#login" aria-controls="login" role="tab" data-toggle="tab" class="title-small">ورود</a></li>
+            <li role="presentation" class="col-md-6 col-lg-6 col-sm-6 col-xs-6 text-center @(ViewBag.signin == "true"? "active" : "" )" ><a href="#signin" aria-controls="signin" role="tab" data-toggle="tab" class="title-small">عضویت</a></li>
+
+
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <!--login-->
+            <div role="tabpanel" class="tab-pane @(ViewBag.signin == "false"? "active" : "" )" id="login">
+
+
+                <div class="panel-body">
+                    @*<a asp-controller="Account" asp-action="RecoveryEmail" asp-area="">Test Email</a>*@
+                    <a asp-action="GoogleLogin" asp-controller="Account" asp-area="" class="btn btn-danger text-bold center-block"  >ورود با گوگل اکانت</a>
+                    <br/>
+                    <section>
+                        <form asp-controller="Account" asp-action="Login"
+                              method="post" class="form-horizontal" asp-route-returnUrl="@ViewData["ReturnUrl"]">
+
+                            <div class="form-group">
+                                <label asp-for="UserName" class="col-md-3 control-label title-small"></label>
+                                <div class="col-md-8">
+                                    <input asp-for="UserName" class="form-control title-small" placeholder="ایمیل" />
+                                    <span asp-validation-for="UserName" class="title-small"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Password" class="col-md-3 control-label title-small"></label>
+                                <div class="col-md-8">
+                                    <input asp-for="Password" class="form-control title-small" />
+                                    <span asp-validation-for="Password" class="title-small"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-8">
+                                    <div class="checkbox">
+                                        <label asp-for="RememberMe" class="title-small">
+                                            <input asp-for="RememberMe" type="checkbox" class="form-control-file" />
+                                            @Html.DisplayNameFor(m => m.RememberMe)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-4 colmd-8">
+                                    <button type="submit" class="btn btn-submit col-md-offset-2 col-md-10 col-lg-6 form-horizontal">ورود به سیستم</button>
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </section>
+                </div>
+
+            </div><!--sigin in ------------------------------------- -->
+            <div role="tabpanel" class="tab-pane  @(ViewBag.signin == "true"? "active" : "" )" id="signin">
+
+                <div class="panel-body">
+                    <a asp-action="GoogleLogin" asp-controller="Account" asp-area="" class="btn btn-danger text-bold center-block">ثبت نام با گوگل اکانت</a>
+
+                    <section>
+                        <span class="title-bold" style="color:red">@ViewBag.error</span>
+                        <form asp-controller="Account" asp-action="Signin"
+                              method="post" class="form-horizontal" asp-route-returnUrl="@ViewData["ReturnUrl"]">
+
+                            <div class="form-group">
+                                <label asp-for="signin.FirstName" class="col-lg-4 col-sm-4 control-label title-small"></label>
+                                <span class="col-lg-1 col-sm-1 title-small" style="color:red;">*</span>
+                                <div class="col-lg-6">
+                                    <input asp-for="signin.FirstName" class="form-control title-small" />
+                                    <span asp-validation-for="signin.FirstName" class="title-small"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="signin.LastName" class="col-lg-4 col-sm-4 control-label title-small"></label>
+                                <span class="col-lg-1 col-sm-1 title-small" style="color:red;">*</span>
+                                <div class="col-lg-6">
+                                    <input asp-for="signin.LastName" class="form-control title-small" />
+                                    <span asp-validation-for="signin.LastName" class="title-small"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="signin.Email" class="col-lg-4 col-sm-4 control-label title-small"></label>
+                                <span class="col-lg-1 col-sm-1 title-small" style="color:red;">*</span>
+                                <div class="col-lg-6">
+                                    <input asp-for="signin.Email" class="form-control title-small" />
+                                    <span asp-validation-for="signin.Email" class="title-small"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="signin.PhoneNumber" class="col-lg-4 col-sm-4 control-label title-small"></label>
+                                <span class="col-lg-1 col-sm-1 title-small" style="color:red;"> </span>
+                                <div class="col-lg-6">
+                                    <input asp-for="signin.PhoneNumber" class="form-control title-small" />
+                                    <span asp-validation-for="signin.PhoneNumber" class="title-small"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="signin.Password" class="col-lg-4 col-sm-4 control-label title-small"></label>
+                                <span class="col-lg-1 col-sm-1 title-small" style="color:red;">*</span>
+                                <div class="col-lg-6">
+                                    <input asp-for="signin.Password" class="form-control title-small" />
+                                    <span asp-validation-for="signin.Password" class="title-small"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-4 colmd-8">
+                                    <button type="submit" class="btn btn-submit col-md-offset-2 col-md-10 col-lg-6 form-horizontal" style="min-width:120px;">عضویت</button>
+                                </div>
+                            </div>
+
+                            @*footer*@
+                            <hr class="break-dash" />
+                            <span class="title-small">رمز عبور شامل » عدد + حروف انگلیسی بزرگ + حروف انگلیسی کوچک + کارکتر خاص </span>
+                            <br />
+                            <br />
+                            <span class="title-small">:::: نمونه رمز ::::</span>
+                            <span class="title-bold">passWORD1996!?</span>
+                        </form>
+                    </section>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/Scripts/jquery-1.8.0.min.js"></script>
+
+    <!-- #region  My query-->
+    <script>
+        $('#myTabs a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+    </script>
+    <!-- #endregion -->
+
+}
+
+

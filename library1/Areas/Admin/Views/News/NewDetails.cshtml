@@ -1,0 +1,45 @@
+﻿@model library1.Models.News
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, library1
+@{
+    ViewData["Title"] = "خبر و اطلاعیه";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="div-cart panel ">
+        <h5 class="title-bold pull-right panel-heading">@Model.newTitle</h5>
+        <hr class="break-dash" />
+        <br />
+        <div class="panel-body">
+
+
+            <div class="col-lg-4">
+                @if (Model.newsImage != null)
+            {
+                    <img src="@ViewBag.RootPath@Model.newsImage" class="img-responsive" />
+                }
+                else
+                {
+                    <img src="~/images/img01.png" />
+                }
+            </div>
+
+            <div class="col-lg-8">
+
+                <div class="dl-horizontal">
+                    @*<span class="title-small col-lg-2">@Html.DisplayNameFor(model => model.newsConten)</span>*@
+                    <span class="title-medium col-lg-10">@Html.Raw(Model.newsConten)</span>
+                </div>
+
+                    
+
+            </div>
+        </div>
+
+        <div class="panel-footer">
+            <span class="title-small"><span class="title-medium">@Html.DisplayFor(model => model.newsDate)</span> توسط ادمین ایجاد شده</span>
+        </div>
+
+    </div>
+</div>

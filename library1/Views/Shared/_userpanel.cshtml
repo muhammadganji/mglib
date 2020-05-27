@@ -1,0 +1,88 @@
+﻿
+<link href="~/css/panel admin.css" rel="stylesheet" />
+
+
+
+<div class="col-md-3">
+
+    <div>
+        <form asp-area="" asp-controller="Account" asp-action="LogOut"
+              method="post" class="div-cart">
+
+            <div class="">
+                @*<a class="btn title-small" asp-area="Admin" asp-controller="User" asp-action="Index">
+                        پنل @_userManager.GetUserName(User)
+                    </a>*@
+
+                <div>
+
+                    <span class="title-small"></span>
+                    <span class="title-bold">
+
+                        @ViewBag.fullname
+                    </span>
+                </div>
+
+                <hr class="break" />
+
+                <span class="title-small">
+
+                    موجودی :
+                    <span class="title-bold">
+                        @ViewBag.Wallet
+                    </span>
+                     تومان 
+                </span>
+
+
+                <hr class="break" />
+                
+                <input type="submit" class="btn btn-back title-small" value="خروج" />
+            </div>
+        </form>
+    </div>
+
+
+    <div class=" div-cart menu">
+
+        <span class="title-bold">پنل کاربر</span>
+        <hr class="break" />
+        <ul>
+
+
+
+            <li class="main-li first-li">
+                <a href="#">درخواست ها</a>
+                <ul>
+                    <li><a asp-controller="UserProfile" asp-action="Index">مشاهده درخواست ها</a></li>
+
+                </ul>
+            </li>
+
+            <li class="main-li">
+                <a href="#">پروفایل</a>
+                <ul>
+                    <li><a asp-action="Profile" asp-controller="UserProfile" asp-area="User">پروفایل</a></li>
+                    <li><a asp-action="ChangePassword" asp-controller="UserProfile" asp-area="User">تغییر رمز</a></li>
+                    <li><a asp-action="ConfirmMobile" asp-controller="UserProfile" asp-area="User">تایید شماره موبایل</a></li>
+
+                </ul>
+            </li>
+
+
+            <li class="main-li">
+                <a href="#">مالی</a>
+                <ul>
+                    <li><a asp-action="Payment" asp-controller="Payment" asp-area="User">شارژ حساب</a></li>
+                    <li><a asp-action="Index" asp-controller="Transaction" asp-area="User">لیست تراکنش ها</a></li>
+                </ul>
+            </li>
+
+
+
+        </ul>
+    </div>
+
+
+</div>
+

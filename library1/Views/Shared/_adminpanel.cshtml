@@ -1,0 +1,71 @@
+﻿
+<link href="~/css/panel admin.css" rel="stylesheet" />
+
+
+
+<div class="col-md-3">
+
+    <div>
+        @Html.Partial("_userheader")
+    </div>
+
+
+    <div class=" div-cart menu">
+
+        <span class="title-bold">پنل مدیریتی</span>
+        <hr class="break" />
+        <ul>
+
+
+
+            <li class="main-li first-li">
+                <a href="#">آرشیو</a>
+                <ul>
+                    <li><a asp-controller="Book" asp-action="Index">کتاب</a></li>
+                    <li><a asp-controller="BookGroup" asp-action="Index">گروه کتاب</a></li>
+                    <li><a asp-controller="Author" asp-action="Index">نویسنده</a></li>
+                </ul>
+            </li>
+
+            <li class="main-li">
+                <a href="#">درخواست ها</a>
+                <ul>
+                    <li><a asp-area="Admin" asp-controller="ManageRequestBook" asp-action="Index">بررسی درخواست جدید</a></li>
+                </ul>
+            </li>
+
+
+            <li class="main-li">
+                <a href="#">مطالب</a>
+                <ul>
+                    <li><a asp-controller="News" asp-action="Index">اخبار اطلاعیه</a></li>
+                    <li><a href="#">بررسی نظر</a></li>
+                    @* <li><a href="#">نمونه</a></li>*@
+                </ul>
+            </li>
+
+
+            <li class="main-li">
+                <a href="#">کاربران</a>
+                <ul>
+                    <li><a asp-controller="User" asp-action="Index">کاربر</a></li>
+                    <li><a asp-controller="ApplicationRole" asp-action="Index">نقش</a></li>
+                </ul>
+            </li>
+
+
+            <li class="main-li">
+                <a href="#">مدیریت مالی</a>
+                <ul>
+                    <li><a asp-controller="ManageTransaction" asp-action="Index" asp-area="Admin">لیست تراکنش ها</a></li>
+                </ul>
+            </li>
+
+
+
+        </ul>
+    </div>
+
+    
+</div>
+

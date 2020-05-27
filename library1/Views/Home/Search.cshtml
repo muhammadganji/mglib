@@ -1,0 +1,103 @@
+﻿@model IEnumerable<library1.Models.Book>
+@* تعداد هفت عدد برای نمایشگر های معولی مناسب هستش  *@
+
+@{
+    ViewData["Title"] = "جستجو";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section seachSection{
+    <form class="formSearch form-inline text-right title-small col-lg-6 col-md-6 col-sm-8 col-xs-12 text-center" style="margin-top:10px; margin-right:20px;margin-left:20px; ">
+        <div class="row">
+            <input name="searchType" id="searchType" type="text" class="form-control-static col-lg-8 col-xs-9 col-sm-10 col-md-10" placeholder="کتاب  ...">
+            @*<input type="search" class="form-control-static col-lg-8 col-xs-10" placeholder="کتاب ... خبر ... کاربر ...">*@
+            <button asp-action="Search" asp-controller="Home"
+                    class="form-control-static btn-submit pull-right col-lg-1 col-md-1 col-sm-1 col-xs-2" style="border-radius: 0px;padding-left:5px;padding-right:5px; margin:0px; min-width:65px; height:36px;">
+                <span>جستجو</span>
+            </button>
+        </div>
+    </form>
+}
+
+
+
+
+@inject SignInManager<ApplicationUser> _signInManager
+@inject UserManager<ApplicationUser> _userManager
+
+@section menuSection{
+    @using Microsoft.AspNetCore.Identity
+    @using library1.Models
+    @using library1.PublicModel
+
+
+    @if (_signInManager.IsSignedIn(User))
+    {
+        // is signed in
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4" style="margin-top:10px; width:164px;">
+
+            <div class="pull-right">
+                <a class="btn btn-back" style="border-radius: 0px;padding-left:5px;padding-right:5px; margin:0px; min-width:42px; height:36px;" asp-area="admin" asp-controller="Book" asp-action="Index">
+                    پنل کاربری
+                    <!--<span class=" glyphicon glyphicon-home" aria-hidden="true" />-->
+                </a>
+            </div>
+            <div class=" pull-left">
+                <form asp-action="LogOut" asp-controller="Account" method="post">
+                    <input type="submit" value="خروج" class="btn btn-back" style="border-radius: 0px;padding-left:5px;padding-right:5px; margin:0px; min-width:42px; height:36px;" />
+                </form>
+            </div>
+
+        </div>
+    }
+    else
+    {
+        // is log out
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" style="margin-top:10px;">
+            <a class="form-control-static btn-back pull-right col-lg-1 col-md-1 col-sm-1 col-xs-2" style="border-radius: 0px;padding-left:5px;padding-right:5px; margin:0px; min-width:42px; height:36px;" asp-area="" asp-controller="Account" asp-action="Login">
+                ورود
+            </a>
+
+
+        </div>
+
+    }
+}
+
+@if (_signInManager.IsSignedIn(User))
+{
+    <div class="">
+        @Html.Partial("_Basket_borrow")
+    </div>
+}
+
+<div class="div-cart">
+    <span class="cart-title">نتیجه ی جستجوی : <span class="text-primary">@ViewBag.seachText</span></span>
+    <hr class="break-dash" />
+
+    <div class="row">
+        @if (Model.Count() > 0)
+        {
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">
+                    <a asp-area="Admin" asp-controller="Book" asp-action="BookDetails" asp-route-id="@item.BookId" class="text-decoration-none text-center title-item">
+                        @if (item.Image != null)
+                        {
+                            <img src="@ViewBag.normalimage@item.Image" class="img-thumbnail" />
+                        }
+                        else
+                        {
+                            // default image
+                            <img src="~/images/img01.png" class="img-thumbnail" />
+                        }
+
+                        @*<img src="@ViewBag.normalimage@item.Image" class="img-thumbnail" />*@
+                        <h5>@item.BookName</h5>
+                        <h6>@item.PageNumber صفحه</h6>
+                    </a>
+                </div>
+            }
+        }
+    </div>
+</div>

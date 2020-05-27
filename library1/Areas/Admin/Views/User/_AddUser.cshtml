@@ -1,0 +1,105 @@
+﻿@using library1.PublicModel
+@model library1.Models.ViewModel.UserViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, library1
+
+
+<form asp-action="AddUser" asp-controller="User"
+      id="adduser" data-ajax="true" data-ajax-method="POST"
+      data-ajax-update="#adduser" data-ajax-mode="replace">
+
+    @* header *@
+    @await Html.PartialAsync("_Modalheader", new ModelHeader { Header = "افزودن کاربر" })
+
+
+    @* body *@
+    <div class="modal-body form-horizontal">
+        <div class="row">
+
+
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="FirstName" class="col-lg-5 col-sm-5 control-label title-small"></label>
+                    <div class="col-lg-6">
+                        <input asp-for="FirstName" class="form-control title-small" />
+                        <span asp-validation-for="FirstName" class="title-small"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="LastName" class="col-lg-5 col-sm-5 control-label title-small"></label>
+                    <div class="col-lg-6">
+                        <input asp-for="LastName" class="form-control title-small" />
+                        <span asp-validation-for="LastName" class="title-small"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label asp-for="Email" class="col-lg-5 col-sm-5 control-label title-small"></label>
+                    <div class="col-lg-6">
+                        <input asp-for="Email" class="form-control title-small" />
+                        <span asp-validation-for="Email" class="title-small"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ApplicaitonRoleId" class="col-lg-5 col-sm-5 control-label title-small"></label>
+                    <div class="col-lg-6">
+                        <select asp-for="ApplicaitonRoleId" asp-items="@Model.ApplicationRoles" class="form-control title-small">
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="UserName" class="col-lg-5 col-sm-5 control-label title-small"></label>
+                    <div class="col-lg-6">
+                        <input asp-for="UserName" class="form-control title-small" />
+                        <span asp-validation-for="UserName" class="title-small"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="PhoneNumber" class="col-lg-5 col-sm-5 control-label title-small"></label>
+                    <div class="col-lg-6">
+                        <input asp-for="PhoneNumber" class="form-control title-small" />
+                        <span asp-validation-for="PhoneNumber" class="title-small"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Password" class="col-lg-5 col-sm-5 control-label title-small"></label>
+                    <div class="col-lg-6">
+                        <input asp-for="Password" class="form-control title-small" />
+                        <span asp-validation-for="Password" class="title-small"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ConfirmPassword" class="col-lg-5 col-sm-5 control-label title-small"></label>
+                    <div class="col-lg-6">
+                        <input asp-for="ConfirmPassword" class="form-control title-medium" />
+                        <span asp-validation-for="ConfirmPassword" class="title-small"></span>
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" name="redirectUrl" value="@Url.Action("Index","User")" />
+
+        </div>
+    </div>
+
+    @* footer *@
+    @await Html.PartialAsync("_Modalfooter", new Modalfooter { SubmitButtonText = "ثبت", OnlyCancelButton = false })
+
+    <hr class="break-dash" />
+    <span class="title-small">رمز عبور شامل » عدد + حروف انگلیسی بزرگ + حروف انگلیسی کوچک + کارکتر خاص </span>
+    <br />
+    <br />
+    <span class="title-small">:::: نمونه رمز ::::</span>
+    <span class="title-bold">passWORD1996!?</span>
+
+
+</form>

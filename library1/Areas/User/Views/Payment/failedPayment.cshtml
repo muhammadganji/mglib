@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewData["Title"] = "تراکنش ناموفق";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, library1
+
+<div>
+    @Html.Partial("_userpanel")
+</div>
+
+<div class="col-md-9">
+    <div class="top-buffer"></div>
+    <div class="panel div-cart">
+
+        <div class="panel-head">
+            <div class="col-md-3 title-medium">عملیات ناموفق</div>
+        </div>
+
+        <hr class="break" />
+        <div class="panel-body">
+
+            <span class="title-item" style="color:orangered">عملیات پرداخت ناموفق بود، در صورتی که وجهی از حساب شما کسر شده باشد، کمتر از 72 ساعت به حساب شما برگشت داده خواهد شد</span>
+            <br />
+            <span class="title-small">چنانچه عملیات برگشت وجه در مدت معلوم انجام نشد، میتوانید در پنل خود درخواست پیگیری دهید</span>
+            <br />
+            <a class="btn btn-default" style="text-align:center;" asp-controller="Home" asp-action="Index" asp-area="">بازگشت به صفحه اصلی</a>
+
+
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/myScript/menu panel admin.js"></script>
+
+}

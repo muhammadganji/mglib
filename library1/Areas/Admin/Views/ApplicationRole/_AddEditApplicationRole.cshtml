@@ -1,0 +1,64 @@
+﻿@using library1.PublicModel
+@model library1.Models.ViewModel.ApplicationRoleViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, library1
+
+
+<form asp-action="AddEditRole" asp-controller="ApplicationRole"
+      id="frmaddeditrole" data-ajax="true" data-ajax-method="POST"
+      data-ajax-update="#frmaddeditrole" data-ajax-mode="replace">
+
+    @* header *@
+    @if (string.IsNullOrEmpty(Model.Id))
+    {
+        @await Html.PartialAsync("_Modalheader", new ModelHeader { Header = "افزودن نقش" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_Modalheader", new ModelHeader { Header = "ویرایش نقش" })
+    }
+
+    @* body *@
+    <div class="modal-body form-horizontal">
+        <div class="row">
+
+            <div class="form-group">
+                <label asp-for="Name" class="col-lg-3 col-sm-3 control-label title-small"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Name" class="form-control title-medium" />
+                    <span asp-validation-for="Name" class="title-small"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description" class="col-lg-3 col-sm-3 control-label title-small"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Description" class="form-control title-medium" />
+                    <span asp-validation-for="Description" class="title-small"></span>
+                </div>
+            </div>
+
+            <div class="form-group hidden">
+                <label asp-for="Id" class="col-lg-3 col-sm-3 control-label title-small"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Id" class="form-control title-medium" />
+                    <span asp-validation-for="Id" class="title-small"></span>
+                </div>
+            </div>
+
+            <input type="hidden" name="redirectUrl" value="@Url.Action("Index","ApplicationRole")" />
+
+        </div>
+    </div>
+
+    @* footer *@
+    @if (string.IsNullOrEmpty(Model.Id))
+    {
+        @await Html.PartialAsync("_Modalfooter", new Modalfooter { SubmitButtonText = "ثبت", OnlyCancelButton = false })
+    }
+    else
+    {
+        @await Html.PartialAsync("_Modalfooter", new Modalfooter { SubmitButtonText = "بروز رسانی", OnlyCancelButton = false })
+    }
+
+</form>

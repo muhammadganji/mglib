@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewData["Title"] = "پرداخت موفق";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, library1
+
+<div>
+    @Html.Partial("_userpanel")
+</div>
+
+<div class="col-md-9">
+    <div class="top-buffer"></div>
+    <div class="panel div-cart">
+
+        <div class="panel-head">
+            <div class="col-md-3 title-medium"> عملیات موفق</div>
+        </div>
+
+        <hr class="break" />
+        <div class="panel-body">
+
+
+            <span class="title-item" style="color:lightseagreen">پرداخت با موفقیت انجام شد</span>
+            <br />
+            <a class="btn btn-default" style="text-align:center;" asp-controller="Home" asp-action="Index" asp-area="">بازگشت به صفحه اصلی</a>
+
+            <br />
+            <br />
+
+            <table class="table table-bordered table-striped table-condensed col-md-12 text-center">
+
+                <thead>
+                    <tr>
+                        <th class="title-small">شماره تراکنش</th>
+                        <th class="title-small">تاریخ</th>
+                        <th class="title-small">زمان</th>
+                        <th class="title-small">توضیح</th>
+                        <th class="title-small">مبلغ - تومان</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td class="title-small">@ViewBag.TransactionNo</td>
+                        <td class="title-small">@ViewBag.TransactonDate</td>
+                        <td class="title-small">@ViewBag.TransactionTime</td>
+                        <td class="title-small">@ViewBag.Description</td>
+                        <td class="title-bold">@ViewBag.Amount</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+
+
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/myScript/menu panel admin.js"></script>
+
+}

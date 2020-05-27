@@ -1,0 +1,115 @@
+﻿
+@{
+    ViewData["Title"] = "مدیریت تراکنش ها";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using library1.PublicModel @* for AreaLabel ID, Size *@
+@using ReflectionIT.Mvc.Paging
+@model ReflectionIT.Mvc.Paging.PagingList<library1.Models.ViewModel.PaymentTransactionViewModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, library1
+
+<link href="~/js/persian_date_picker/jquery.Bootstrap-PersianDateTimePicker.css" rel="stylesheet" />
+
+
+<div>
+    @Html.Partial("_adminpanel")
+</div>
+
+<div class="col-md-9">
+    <div class="top-buffer"></div>
+    <div class="panel div-cart">
+
+        @* https://www.codeproject.com/Articles/858123/Bootstrap-Persian-DateTimePicker *@
+        <div class="panel-heading" style="border:0px; margin:0 !important; padding-bottom:1px;">
+            <div class="col-md-3 title-medium">ليست تراکنش ها</div>
+
+            <form method="post" asp-controller="ManageTransaction" asp-action="SearchInPaymentTransaction" class="form-horizontal">
+                <div class="form-group">
+                    <div class="input-group col-md-2 pull-right">
+                        <div class="input-group-addon" data-MdDateTimePicker="true" data-trigger="click" data-targetselector="#fromDate1" data-groupid="group1" data-fromdate="true" data-enabletimepicker="false" data-placement="left">
+                            <span class="glyphicon glyphicon-calendar" style=" height:14px;"></span>
+                        </div>
+                        <input type="text" class="form-control title-small" style="margin-right:0px; height:36px; padding-left:7px; padding-right:7px;" id="fromDate1" name="fromDate1" placeholder="از تاريخ" data-MdDateTimePicker="true" data-trigger="click" data-targetselector="#fromDate1" data-groupid="group1" data-fromdate="true" data-enabletimepicker="false" data-placement="right" />
+                    </div>
+
+                    <div class="input-group col-md-2 pull-right">
+                        <div class="input-group-addon" data-MdDateTimePicker="true" data-trigger="click" data-targetselector="#todate1">
+                            <span class="glyphicon glyphicon-calendar" style="margin-right:0px; height:14px; "></span>
+                        </div>
+                        <input type="text" class="form-control title-small" style="margin-right:0px; height:36px; padding-left:7px; padding-right:7px;" id="todate1" name="todate1" placeholder="تا تاريخ" data-MdDateTimePicker="true" data-placement="right" />
+                    </div>
+
+
+                    <div class="group-btn col-md-2 pull-left">
+                        <button class="btn btn-default title-small" style="height:36px; width:96px;" type="submit">جستجو</button>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="searchuser" name="searchuser" class="form-control title-small" style="padding-right:7px;padding-left:7px;" placeholder=" نام .. ایمیل .. موبایل" />
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <hr class="break" />
+        <div class="panel-body">
+
+            <div></div>
+            <table class="table table-bordered table-striped table-condensed>">
+                <thead>
+                    <tr>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.FullName)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.Amount)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.TransactonDate)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.TransactionTime)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.TransactionNo)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.Email)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.Mobile)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.Description)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--Check null refrenced for Model-->
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="title-small">@item.FullName</td>
+                                <td class="title-small">@item.Amount</td>
+                                <td class="title-small">@item.TransactonDate</td>
+                                <td class="title-small">@item.TransactionTime</td>
+                                <td class="title-small">@item.TransactionNo</td>
+                                <td class="title-small">@item.Email</td>
+                                <td class="title-small">@item.Mobile</td>
+                                <td class="title-small">@item.Description</td>
+
+                            </tr>
+                        }
+                    }
+
+
+                </tbody>
+
+
+            </table>
+
+            <nav class="text-center">
+                @await Component.InvokeAsync("Pager", new { PagingList = this.Model })
+            </nav>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+    <script src="~/lib/modal-js/request-index.js"></script>
+    <script src="~/js/myScript/menu panel admin.js"></script>
+
+    <script src="~/js/persian_date_picker/calendar.js"></script>
+    <script src="~/js/persian_date_picker/jquery.Bootstrap-PersianDateTimePicker.js"></script>
+
+}
+@* modal *@
+@Html.Partial("_Modal", new BootstrapModel { ID = "modal-action-request", AreaLabeledId = "", Size = ModalSize.Medium })

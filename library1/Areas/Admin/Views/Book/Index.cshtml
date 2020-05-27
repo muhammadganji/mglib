@@ -1,0 +1,187 @@
+﻿@using library1.PublicModel @* for AreaLabel ID, Size *@
+@model ReflectionIT.Mvc.Paging.PagingList<library1.Models.ViewModel.BookListViewModel>
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, library1
+@{
+    ViewData["Title"] = "کتاب";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div>
+    @Html.Partial("_adminpanel")
+</div>
+
+<div class="col-md-9">
+
+    <div class="top-buffer"></div>
+    <div class="panel div-cart">
+
+        <div class="panel-head form-inline">
+            <div class="title-medium form-group">
+                کتاب ها
+            </div>
+            <div class="form-group pull-left col-lg-offset-1">
+                <form method="post" asp-controller="Book" asp-action="SearchBook">
+                    <div class="input-group pull-left">
+                        <button class="btn btn-default title-small" style="height:34px; width: 64px;">جستجو</button>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="searchbook" name="searchbook" class="form-control title-small" style="padding-right:7px;padding-left:7px;" placeholder=" نام کتاب..نویسنده..گروه ..." />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <hr class="break" />
+        <div class="panel-body">
+            <div class="btn-group">
+
+                <a class="btn btn-submit" id="showBookList" data-toggle="modal" asp-action="AddBook"
+                   data-target="#modal-action-book">
+                    کتاب جدید
+                </a>
+            </div>
+
+            <div></div>
+            <table class="table table-bordered table-striped table-condensed>">
+                <thead>
+                    <tr>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.BookName)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.PageNumber)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.BookImage)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.AuthorName)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.BookGroupName)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.Price)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.BookStock)</th>
+                        <th class="title-small">پردازش</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--Check null refrenced for Model-->
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="title-small">@item.BookName</td>
+                                <td class="title-small text-center">@item.PageNumber</td>
+                                <td class="title-small">
+                                    @if (item.BookImage != null)
+                                    {
+                                        <img src="@ViewBag.RootPath@item.BookImage" class="img-bit img-thumbnail" />
+                                    }
+                                    else
+                                    {
+                                        // default image
+                                        <img src="~/images/cover book/default.jpg" class="img-bit img-thumbnail" />
+                                    }
+                                </td>
+                                <td class="title-small">@item.AuthorName</td>
+                                <td class="title-small">@item.BookGroupName</td>
+                                <td class="title-small">@item.Price</td>
+                                <td class="title-small">@item.BookStock</td>
+                                <td>
+                                    <a class="btn btn-edit" id="showEditBookList" data-toggle="modal" asp-action="EditBook"
+                                       data-target="#modal-action-book" asp-route-id="@item.BookId">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                    </a>
+                                    <a class="btn btn-cancel" id="showDeleteBookList" data-toggle="modal" asp-action="DeleteBook"
+                                       data-target="#modal-action-book" asp-route-id="@item.BookId">
+                                        <i class="glyphicon glyphicon-remove"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+
+
+                </tbody>
+
+
+            </table>
+
+            <nav class="text-center">
+                @await this.Component.InvokeAsync("Pager", new { PagingList = this.Model})
+            </nav>
+        </div>
+    </div>
+
+</div>
+
+
+@section Scripts{
+
+    <script src="~/js/ckeditor/ckeditor.js"></script>
+    <script src="~/lib/modal-js/book-index.js"></script>
+
+    @*   ارسال اطلاعات به سمت سرور   *@
+    <script>
+
+        $(document).on('click', '#submitdate', function (evt) {
+            evt.preventDefault();
+
+            // متغیر برای ارسال فایل به سمت سرور
+            var data = new FormData();
+
+            // دریافت مقادیر فایل آپلودی
+            var fileupload = $("#files").get(0);
+            var files = fileupload.files;
+
+            for (var i = 0; i < files.length; i++) {
+                data.append('files', files[i]);
+
+            }
+
+            // دریافت مقادیر موجود به همراه نام آنها
+            $('input,select').each(function (index,filds) {
+                data.append($(filds).attr('name'), $(filds).val());
+            });
+
+            // دریافت مقدار ادیتور
+            var editorval = CKEDITOR.instances['Description'].getData();
+            data.append('Description', editorval);
+
+            // ارسال به کمک ایجکس
+            $.ajax({
+                type: "post",
+                url: '@Url.Action("AddEditBook","Book",new { area = "Admin"})',
+                contentType: false,
+                processData: false,
+                data: data
+            }).done(function (result) {
+                // نتیجه ریزالت توسط فایل جیسون ارسال میشود
+                // علت سه مساوی قرار دادن
+                // 1 باید مقدار مساوی موفقیت داشته باشد
+                //2 مقدار آن نیز که نوع رشته می باشد نیز چک باشد
+                if (result.status === "success") {
+                    //alert(result.message)
+                    //دیگر نیازی به متغیر redirectUrl نداریم چون از همین جا میتونیم کنترل نمایم
+
+                    window.location.href = '@Url.Action("Index","Book")';
+                }
+                else {
+                    // Display error message all of t
+                    alert(result.error);
+                    // Display error message one by one
+                    //$.each(result.error, function (index, message) {
+                    //    alert(message);
+                    //});
+                }
+
+            }).fail(function (xhr, b, error) {
+                alert(error);
+            })
+
+        });
+
+
+    </script>
+
+    <script src="~/js/myScript/menu panel admin.js"></script>
+
+
+}
+@* modal *@
+@Html.Partial("_Modal", new BootstrapModel { ID = "modal-action-book", AreaLabeledId = "", Size = ModalSize.Large })

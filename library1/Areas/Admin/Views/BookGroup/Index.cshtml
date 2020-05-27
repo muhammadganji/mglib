@@ -1,0 +1,104 @@
+﻿@using library1.PublicModel @* for AreaLabel ID, Size *@
+@using ReflectionIT.Mvc.Paging
+
+@model ReflectionIT.Mvc.Paging.PagingList<library1.Models.BookGroup>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, library1
+@{
+    ViewData["Title"] = "گروه بندی";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div>
+    @Html.Partial("_adminpanel")
+</div>
+
+<div class="col-md-9">
+
+    <div class="top-buffer"></div>
+    <div class="panel div-cart">
+
+        <div class="panel-head form-inline">
+            <div class="title-medium form-group">
+                کاربران
+            </div>
+            <div class="form-group pull-left col-lg-offset-1">
+                <form method="post" asp-controller="BookGroup" asp-action="SearchBookGroup">
+                    <div class="input-group pull-left">
+                        <button class="btn btn-default title-small" style="height:34px; width: 64px;">جستجو</button>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="searchbookgroup" name="searchbookgroup" class="form-control title-small" style="padding-right:7px;padding-left:7px;" placeholder=" نام گروه..توضیح ..." />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <hr class="break" />
+        <div class="panel-body">
+            <div class="btn-group">
+
+                <a class="btn btn-submit" id="showBookGroup" data-toggle="modal" asp-action="AddEditBookGroup"
+                   data-target="#modal-action-bookgroup">
+                    گروه کتاب جدید
+                </a>
+            </div>
+
+            <div></div>
+            <table class="table table-bordered table-striped table-condensed>">
+                <thead>
+                    <tr>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.GropuName)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.Description)</th>
+                        <th class="title-small">پردازش</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--Check null refrenced for Model-->
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="title-small">@item.GropuName</td>
+                                <td class="title-small">@item.Description</td>
+                                <td>
+                                    <a class="btn btn-edit" id="showEditBookGroup" data-toggle="modal" asp-action="AddEditBookGroup"
+                                       data-target="#modal-action-bookgroup" asp-route-id="@item.BookGroupId">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                    </a>
+                                    @if (item.books.Count() == 0)
+                                    {
+                                        <a class="btn btn-cancel" id="showDeleteBookGroup" data-toggle="modal" asp-action="DeleteBookgroup"
+                                           data-target="#modal-action-bookgroup" asp-route-id="@item.BookGroupId">
+                                            <i class="glyphicon glyphicon-remove"></i>
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+
+
+                </tbody>
+
+
+            </table>
+
+            <nav class="text-center">
+                @await this.Component.InvokeAsync("Pager", new { PagingList = this.Model })
+            </nav>
+
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="~/lib/modal-js/bookgroup-index.js"></script>
+    <script src="~/js/myScript/menu panel admin.js"></script>
+}
+@* modal *@
+@Html.Partial("_Modal", new BootstrapModel { ID = "modal-action-bookgroup", AreaLabeledId = "", Size = ModalSize.Medium })

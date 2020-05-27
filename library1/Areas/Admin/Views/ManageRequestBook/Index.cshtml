@@ -1,0 +1,170 @@
+﻿@using library1.PublicModel @* for AreaLabel ID, Size *@
+@using ReflectionIT.Mvc.Paging
+@model ReflectionIT.Mvc.Paging.PagingList<library1.Models.ViewModel.ManageRequestBookViewModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, library1
+@{
+    ViewData["Title"] = "لیست درخواست";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/js/persian_date_picker/jquery.Bootstrap-PersianDateTimePicker.css" rel="stylesheet" />
+
+
+<div>
+    @Html.Partial("_adminpanel")
+</div>
+
+<div class="col-md-9">
+    <div class="top-buffer"></div>
+    <div class="panel div-cart">
+
+        @* https://www.codeproject.com/Articles/858123/Bootstrap-Persian-DateTimePicker *@
+        <div class="panel-heading" style="border:0px; margin:0 !important; padding-bottom:1px;">
+            <div class="col-md-3 title-medium">ليست درخواست ها</div>
+
+            <form method="post" asp-controller="ManageRequestBook" asp-action="SearchInRequest" class="form-horizontal">
+                <div class="form-group">
+                    <div class="input-group col-md-2 pull-right">
+                        <div class="input-group-addon" data-MdDateTimePicker="true" data-trigger="click" data-targetselector="#fromDate1" data-groupid="group1" data-fromdate="true" data-enabletimepicker="false" data-placement="left">
+                            <span class="glyphicon glyphicon-calendar" style=" height:14px;"></span>
+                        </div>
+                        <input type="text" class="form-control title-small" style="margin-right:0px; height:36px; padding-left:7px; padding-right:7px;" id="fromDate1" name="fromDate1" placeholder="از تاريخ" data-MdDateTimePicker="true" data-trigger="click" data-targetselector="#fromDate1" data-groupid="group1" data-fromdate="true" data-enabletimepicker="false" data-placement="right" />
+                    </div>
+
+                    <div class="input-group col-md-2 pull-right">
+                        <div class="input-group-addon" data-MdDateTimePicker="true" data-trigger="click" data-targetselector="#todate1">
+                            <span class="glyphicon glyphicon-calendar" style="margin-right:0px; height:14px; "></span>
+                        </div>
+                        <input type="text" class="form-control title-small" style="margin-right:0px; height:36px; padding-left:7px; padding-right:7px;" id="todate1" name="todate1" placeholder="تا تاريخ" data-MdDateTimePicker="true" data-placement="right" />
+                    </div>
+
+
+                    <div class="group-btn col-md-2 pull-left">
+                        <button class="btn btn-default title-small" style="height:36px; width:96px;" type="submit">جستجو</button>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="searchuser" name="searchuser" class="form-control title-small" style="padding-right:7px;padding-left:7px;" placeholder=" نام کاربر ..." />
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <hr class="break" />
+        <div class="panel-body">
+
+            <div></div>
+            <table class="table table-bordered table-striped table-condensed>">
+                <thead>
+                    <tr>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.UserName)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.BookName)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.BookStock)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.DateTimeRequest)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.DateTimeConfirmAdmin)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.DateTimeGiveBack)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.Price)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.FlagDescribtion)</th>
+                        <th class="title-small">پردازش</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--Check null refrenced for Model-->
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="title-small">@item.UserName</td>
+                                <td class="title-small">@item.BookName</td>
+                                <td class="title-small">@item.BookStock</td>
+                                <td class="title-small">@item.DateTimeRequest</td>
+                                <td class="title-small">@item.DateTimeConfirmAdmin</td>
+                                <td class="title-small">@item.DateTimeGiveBack</td>
+                                <td class="title-small">@item.Price</td>
+
+                                @if (item.Flag == 1)
+                                {
+                                    // درخواست امانت
+                                    <td class="title-small" style="color:rgb(92, 184, 92)">@item.FlagDescribtion</td>
+                                }
+                                else if (item.Flag == 2)
+                                {
+                                    // به امانت برده
+                                    <td class="title-small" style="color:lightseagreen">@item.FlagDescribtion</td>
+                                }
+                                else if (item.Flag == 3)
+                                {
+                                    // رد درخواست
+                                    <td class="title-small" style="color:rgb(217, 83, 79)">@item.FlagDescribtion</td>
+                                }
+                                else if (item.Flag == 4)
+                                {
+                                    // بازگزدانده شده
+                                    <td class="title-small" style="">@item.FlagDescribtion</td>
+                                }
+
+                                <td class="title-small">
+                                    @if (item.Flag == 1)
+                                    {
+                                        // درخواست امانت
+                                        <a class="btn btn-success" id="" data-toggle="modal" asp-action="AcceptRequest"
+                                           asp-route-id="@item.Id"
+                                           data-target="#modal-action-request">
+                                            <i class="glyphicon glyphicon-ok"></i>
+                                        </a>
+                                        <a class="btn btn-danger" id="" data-toggle="modal" asp-action="RejectRequest"
+                                           asp-route-id="@item.Id"
+                                           data-target="#modal-action-request">
+                                            <i class="glyphicon glyphicon-remove"></i>
+                                        </a>
+                                    }
+                                    else if (item.Flag == 2)
+                                    {
+                                        // به امانت برده
+                                        <a class="btn btn-edit" id="" data-toggle="modal" asp-action="GiveBackRequest"
+                                           asp-route-id="@item.Id"
+                                           data-target="#modal-action-request">
+                                            <i class="glyphicon glyphicon-repeat"></i>
+                                        </a>
+                                    }
+                                    else if (item.Flag == 3)
+                                    {
+                                        // رد درخواست
+
+                                    }
+                                    else if (item.Flag == 4)
+                                    {
+                                        // بازگرداندن کتاب
+
+                                    }
+                                </td>
+
+                            </tr>
+                        }
+                    }
+
+
+                </tbody>
+
+
+            </table>
+
+            <nav class="text-center">
+                @await Component.InvokeAsync("Pager",new { PagingList = this.Model})
+            </nav>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+    <script src="~/lib/modal-js/request-index.js"></script>
+    <script src="~/js/myScript/menu panel admin.js"></script>
+
+    <script src="~/js/persian_date_picker/calendar.js"></script>
+    <script src="~/js/persian_date_picker/jquery.Bootstrap-PersianDateTimePicker.js"></script>
+
+}
+@* modal *@
+@Html.Partial("_Modal", new BootstrapModel { ID = "modal-action-request", AreaLabeledId = "", Size = ModalSize.Medium })

@@ -1,0 +1,29 @@
+﻿@model string
+@using library1.PublicModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, library1
+
+<form asp-controller="ApplicationRole" asp-action="DeleteRole">
+
+
+    @* Header *@
+    @await Html.PartialAsync("_Modalheader", new ModelHeader { Header = "حذف نقش" })
+
+
+
+    <div class="modal-body form-horizontal title-small">
+        آیا از حذف نقش <span class="title-bold">@Model</span> مطمئن هستید ؟
+    </div>
+
+
+
+
+
+
+    @* Footer *@
+    @await Html.PartialAsync("_Modalfooter", new Modalfooter { SubmitButtonText = "تایید حذف", OnlyCancelButton = false })
+
+
+
+
+</form>

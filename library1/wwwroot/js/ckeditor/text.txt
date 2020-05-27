@@ -1,0 +1,1 @@
+http://docs.cksource.com/CKEditor_3.x/Developers_Guide/Integration

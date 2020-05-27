@@ -1,0 +1,72 @@
+﻿
+.menu li {
+    list-style-type: none !important;
+}
+
+/*@@@@@@@@   title    @@@@@@*/
+.main-li > a {
+    display: block;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-left: 5px;
+    background-color: whitesmoke;
+    color: rgb(110, 110, 110);
+    border-right: 2px solid rgb(110, 110, 110);
+    margin-bottom: 3px;
+    cursor: default;
+}
+
+.main-li ul {
+    display: none;
+}
+
+.main-li > a::before {
+    position: absolute;
+    color: rgb(110, 110, 110);
+    content: '+';
+    left: 0px;
+    margin-top: 0px;
+    margin-left: 20px;
+    /*margin-right: 200px;*/
+    transition: all 0.2s ease-out;
+}
+
+.main-li.openul > a::before {
+    transform: rotate(180deg);
+    color: rgb(180, 180, 180);
+    content: '-';
+}
+
+.main-li > a::after {
+    position: absolute;
+    color: rgb(110, 110, 110);
+    left: 0px;
+    /*content: '+';*/
+    margin-top: 0px;
+    margin-left: 20px;
+    /*margin-right: 200px;*/
+    transition: all 0.2s ease-out;
+}
+
+.main-li.openul > a::after {
+    transform: rotate(-180deg);
+    color: rgb(180, 180, 180);
+    content: '-';
+}
+
+
+/*@@@@@@@@   item    @@@@@@*/
+.main-li > ul a {
+    display: block;
+    padding-top: 5px;
+    padding-right: 10px;
+    padding-left: 5px;
+    color: rgb(128, 128, 128);
+}
+
+    .main-li > ul a:hover {
+        transition: all 200ms;
+        display: block;
+        background-color: lightseagreen;
+        color: #fff;
+    }

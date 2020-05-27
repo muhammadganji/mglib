@@ -1,0 +1,76 @@
+﻿*{
+    margin:0px;
+    padding:0px;
+    border:0px;
+}
+
+body {
+    /*background-image: url('../images/Background03.jpg');*/
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+    background-color: rgb(224, 224, 224);
+    height: 100%;
+}
+
+a {
+    font-family: iranyekan bold;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+footer {
+    background-color: whitesmoke;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+
+
+@font-face {
+    font-family: 'iranyekan bold';
+    src: url('../font/iranyekanwebbold.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'iranyekan light';
+    src: url('../font/iranyekanweblight.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'iranyekan regular';
+    src: url('../font/iranyekanwebregular.woff') format('woff');
+}
+

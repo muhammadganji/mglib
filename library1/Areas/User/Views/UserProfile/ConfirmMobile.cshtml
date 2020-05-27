@@ -1,0 +1,97 @@
+﻿@model library1.Models.ViewModel.ConfirmPhoneViewModel
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, library1
+@{
+    ViewData["Title"] = "تایید موبایل";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    @Html.Partial("_userpanel")
+</div>
+
+<div class="col-md-9">
+    <div class="top-buffer"></div>
+    <div class="panel div-cart">
+        <div class="panel-head title-medium">تایید شماره موبایل</div>
+        <hr class="break" />
+        <div class="panel-body">
+
+            <div class="row form-horizontal">
+                @* confirmed *@
+                @if ((bool)Model.PhoneNumberConfirmed == false)
+                {
+                    <span class="title-small">@Model.FirstName @Model.LastName :<span class="title-bold">@Model.PhoneNumber</span> </span>
+
+                    <form asp-controller="UserProfile" asp-action="ConfirmMobile" asp-area="User" method="post">
+
+                        <div class="col-lg-6 form-control">
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button type="button" id="requestOTP" style="min-width:136px; height:32px;" class="btn btn-info title-medium input-group-addon">درخواست</button>
+                                </span>
+                                <input asp-for="CodeOTP" class="form-control title-medium" aria-describedby="requestOTP" value="" />
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+
+                        <div class="" role="group" style="text-align:center;">
+                            <button type="submit" style="color:white; width:96px; height:32px;" class="btn btn-success title-medium ">تایید کد</button>
+                        </div>
+
+                    </form>
+                }
+                @* not confirmed *@
+                else
+                {
+                    <span class="title-small">شماره تایید شده :<span class="title-bold">@Model.PhoneNumber</span> </span>
+                }
+
+            </div>
+
+            @if (ViewBag.confirmChecked != "")
+            {
+                <div class="form-horizontal">
+                    <span class="title-medium " style="color:lightseagreen">@ViewBag.confirm</span>
+                </div>
+            }
+            @if (ViewBag.confirmWrong != "")
+            {
+                <div class="form-horizontal">
+                    <span class="title-medium " style="color:crimson">@ViewBag.confirmWrong</span>
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+    <script src="~/lib/modal-js/request-index.js"></script>
+    <script src="~/js/myScript/menu panel admin.js"></script>
+
+    <script>
+        $('#requestOTP').on("click", function () {
+            //var post_data = $("#BookId").text();
+            $("#requestOTP").addClass("disabled");
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("RequestCodeOTP", "UserProfile",new { area = "User"})',
+                data: '',
+
+                success: function (msg) {
+                    if (msg.status === 'success') {
+                        alert(msg.message);
+                        //window.location.href = '@Url.Action("ConfirmMobile","UserProfile", new { area = "User"})';
+                    }
+                    else if (msg.status === 'failed') {
+                        alert(msg.message);
+                        //$("#requestOTP").removeClass("disabled");
+                        $("#requestOTP").text("بعدا درخواست دهید");
+                    }
+                }
+            });
+        });
+    </script>
+}

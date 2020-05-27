@@ -1,0 +1,160 @@
+﻿
+@{
+    ViewData["Title"] = "list of book";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, library1
+
+@model library1.Models.ViewModel.MultiModels
+@inject SignInManager<ApplicationUser> _signInManager
+@inject UserManager<ApplicationUser> _userManager
+
+@section menuSection{
+    @using Microsoft.AspNetCore.Identity
+    @using library1.Models
+    @using library1.PublicModel
+
+
+    @if (_signInManager.IsSignedIn(User))
+    {
+        // is signed in
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4" style="margin-top:10px; width:164px;">
+            <div class="pull-right">
+                <a class="btn btn-back" style="border-radius: 0px;padding-left:5px;padding-right:5px; margin:0px; min-width:42px; height:36px;" asp-area="" asp-controller="Home" asp-action="GoToPanel">
+                    پنل کاربری
+                    <!--<span class=" glyphicon glyphicon-home" aria-hidden="true" />-->
+                </a>
+            </div>
+            <div class=" pull-left">
+                <form asp-action="LogOut" asp-controller="Account" asp-area="" method="post">
+                    <input type="submit" value="خروج" class="btn btn-back" style="border-radius: 0px;padding-left:5px;padding-right:5px; margin:0px; min-width:42px; height:36px;" />
+                </form>
+            </div>
+
+        </div>
+    }
+    else
+    {
+        // is log out
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" style="margin-top:10px;">
+            <a class="form-control-static btn-back pull-right col-lg-1 col-md-1 col-sm-1 col-xs-2" style="border-radius: 0px;padding-left:5px;padding-right:5px; margin:0px; min-width:42px; height:36px;" asp-area="" asp-controller="Account" asp-action="Login">
+                ورود
+            </a>
+
+
+        </div>
+
+    }
+}
+
+
+<div class="class=" container"">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
+
+        <div class="div-cart">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
+                <span class="title-small">@ViewBag.fullname</span>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 text-left pull-left">
+                <span class="title-small ">
+                    موجودی :
+                    <span class="title-item">
+                        @ViewBag.Wallet
+                    </span>
+                    تومان
+                </span>
+            </div>
+            <br/>
+        </div>
+
+
+        <div class="div-cart">
+            <span class="cart-title">لیست کتاب های انتخاب شده</span>
+            <hr class="break-dash" />
+            @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpCookie
+
+            @{
+
+
+                if (HttpCookie.HttpContext.Request.Cookies["_gharz"] != null && Model.listShop.Count > 0)
+                {
+
+
+
+                    int counerList = 0;
+                    <table class="table table-bordered table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                <th class="title-bold">*</th>
+                                <th class="col-md-6 title-bold">نام کتاب</th>
+                                <th class="col-md-3 title-bold">مبلغ - تومان</th>
+                                <th class="col-md-2 title-bold">عملیات کتاب</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.listShop)
+                            {
+                                counerList++;
+                                <tr>
+                                    <td><span class="hidden">@item.BookId</span>@counerList</td>
+                                    <td class="title-small">@item.BookName</td>
+                                    <td class="title-small">@item.Price</td>
+                                    <td>
+                                        <a asp-area="Admin" asp-action="listShopDelete" asp-controller="Book" asp-route-id="@item.BookId" class="btn btn-warning">حذف</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <br />
+                    <div class="title-bold">
+                        مجموع هزینه ها : <span class="" style="color:lightseagreen;">@Model.listShop.Sum(a => a.Price)</span> تومان
+                    </div>
+                    <hr class="break"  />
+                    <div style="margin-top:20px; text-align:center;">
+                        <a id="saveRequestBorrow" class="btn btn-success">ثبت نهایی</a>
+                        <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-danger">بازگشت</a>
+                    </div>
+
+                }
+                else
+                {
+                    <span class="title-bold text-center" style="text-align:center;">لیست خالی است</span>
+                }
+            }
+        </div>
+    </div>
+    <span class="hidden" id="UserId">@_userManager.GetUserId(User)</span>
+</div>
+
+@section Scripts{
+    <script>
+    $("#saveRequestBorrow").on('click', function () {
+        //var post_data = $("#UserId").text();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("BookRequest","Book")',
+            data: {}, // { 'UserId': post_data },
+
+            success: function (msg) {
+                if (msg.status === "success") {
+                    //alert(msg.message);
+                    window.location.href = '@Url.Action("Index","Home", new { area = "" })'
+                }
+                if (msg.status === "fail") {
+                    alert(msg.message);
+                    window.location.href = '@Url.Action("Payment","Payment", new { area = "user"})';
+                }
+                if (msg.status === "exist") {
+                    alert(msg.message);
+                }
+
+
+            }
+        });
+    });
+    </script>
+}

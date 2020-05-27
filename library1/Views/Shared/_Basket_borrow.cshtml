@@ -1,0 +1,38 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpCookie
+
+@{
+    int count_item = 0;
+    if (HttpCookie.HttpContext.Request.Cookies["_gharz"] != null)
+    {
+        string cookiecontent = HttpCookie.HttpContext.Request.Cookies["_gharz"].ToString();
+        count_item = cookiecontent.Split(",").Where(r => r != "").Count();
+    }
+    else
+    {
+        count_item = 0;
+    }
+}
+<div id="basket_borrow" class="div-cart form-inline">
+
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 text-right">
+        <a asp-area="Admin" asp-action="ListShop" asp-controller="Book" class=""><span class="">مشاهده سبد</span> <i class="glyphicon glyphicon-shopping-cart" style="margin-left:0px; margin-right:20px;"></i> </a>
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 text-left">
+        <span class="title-small">تعداد سفارش :  <span id="basketCount">@count_item</span></span>
+    </div>
+
+    <hr class="break hidden-lg hidden-md hidden-sm" />
+
+    <div class="col-lg-5 col-md-6 col-sm-6 text-left pull-left">
+        <span class="title-small ">
+            موجودی :
+            <span class="title-item">
+                @ViewBag.Wallet
+            </span>
+            تومان
+        </span>
+
+    </div>
+    <br />
+</div>

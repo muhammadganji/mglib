@@ -1,0 +1,134 @@
+﻿@using library1.PublicModel
+@model library1.Models.ViewModel.AddEditBookViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, library1
+
+
+<form method="post" enctype="multipart/form-data">
+    @*asp-action="AddEditBook" asp-controller="Book"
+        id="addeditbook" data-ajax="true" data-ajax-method="POST"
+        data-ajax-update="#addeditbook" data-ajax-mode="replace"*@
+
+    @* header *@
+    @if (Model.BookId == 0)
+    {
+        @await Html.PartialAsync("_Modalheader", new ModelHeader { Header = "افزودن کتاب" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_Modalheader", new ModelHeader { Header = "ویرایش کتاب" })
+    }
+
+
+    @* body *@
+    <div class="modal-body form-horizontal">
+        <div class="row">
+
+            <div class="form-group">
+                <label asp-for="BookName" class="col-lg-2 col-sm-2 control-label title-small"></label>
+                <div class="col-lg-6">
+                    <input asp-for="BookName" class="form-control title-medium" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description" class="col-lg-2 col-sm-2 control-label title-small"></label>
+                <div class="col-lg-9">
+                    <textarea id="Description" name="Description" asp-for="Description" class="form-control title-medium"></textarea>
+                </div>
+                <script type="text/javascript">
+                    CKEDITOR.replace('Description');
+                </script>
+            </div>
+            <div class="form-group">
+                <label asp-for="BookStock" class="col-lg-2 col-sm-2 control-label title-small"></label>
+                <div class="col-lg-6">
+                    <input asp-for="BookStock" class="form-control title-medium" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BookGroupID" class="col-lg-2 col-sm-2 control-label title-small"></label>
+                <div class="col-lg-6">
+                    <select asp-for="BookGroupID" asp-items="@Model.BookGroups" class="form-control title-small"></select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AuthorID" class="col-lg-2 col-sm-2 control-label title-small"></label>
+                <div class="col-lg-6">
+                    <select asp-for="AuthorID" asp-items="@Model.Authors" class="form-control title-small"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="col-lg-2 col-sm-2 control-label title-small"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Price" class="form-control title-medium" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="PageNumber" class="col-lg-2 col-sm-2 control-label title-small"></label>
+                <div class="col-lg-6">
+                    <input asp-for="PageNumber" class="form-control title-medium" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Image" class="col-lg-2 col-sm-2 control-label title-small"></label>
+                <div class="col-lg-6">
+
+                    <input asp-for="Image" type="file" id="files" name="files" multiple class="form-control" />
+
+                    @if (Model.BookId != 0)
+                    {
+                        <input type="hidden" name="ImgName" value="@Model.Image" />
+
+                    }
+
+                </div>
+                <div class="col-lg-3">
+                    @if (@Model.Image != null)
+                    {
+                        <img src="~/upload/thumbnailimage/@Model.Image" class="img-bit img-thumbnail" />
+                    }
+                    else
+                    {
+                        // default image
+                        <img src="~/images/cover book/default.jpg" class="img-bit img-thumbnail" />
+                    }
+
+                </div>
+            </div>
+
+            <input asp-for="BookId" class="hidden" />
+
+
+        </div>
+    </div>
+
+    @* footer *@
+    @if (Model.BookId == 0)
+    {
+        <div class="modal-footer">
+            <button class="btn btn-back" type="button" data-dismiss="modal">برگشت</button>
+
+            <input type="button" id="submitdate" class="btn btn-submit" value="ثبت" />
+        </div>
+        @*@await Html.PartialAsync("_Modalfooter", new Modalfooter { SubmitButtonText = "ثبت", OnlyCancelButton = false })*@
+    }
+    else
+    {
+
+        <div class="modal-footer">
+            <button class="btn btn-back" type="button" data-dismiss="modal">برگشت</button>
+
+            <input type="button" id="submitdate" class="btn btn-submit" value="بروزرسانی" />
+        </div>
+        @*@await Html.PartialAsync("_Modalfooter", new Modalfooter { SubmitButtonText = "بروز رسانی", OnlyCancelButton = false })*@
+    }
+
+</form>
+
+
+@section Scripts{
+}

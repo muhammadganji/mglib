@@ -1,0 +1,35 @@
+﻿
+
+@using Microsoft.AspNetCore.Identity
+@using library1.Models
+@using library1.PublicModel
+
+@inject SignInManager<ApplicationUser> _signInManager
+@inject UserManager<ApplicationUser> _userManager
+
+@if (_signInManager.IsSignedIn(User))
+{
+    // is signed in
+    <form asp-area="" asp-controller="Account" asp-action="LogOut"
+          method="post" class="div-cart">
+
+        <div class="">
+            @*<a class="btn title-small" asp-area="Admin" asp-controller="User" asp-action="Index">
+                    پنل @_userManager.GetUserName(User)
+                </a>*@
+            <span class="title-small">
+
+                خوش آمدی
+                <span class="title-bold">
+
+                    @_userManager.GetUserName(User)
+                </span>
+            </span>
+
+
+            <hr class="break" />
+            <input type="submit" class="btn btn-back title-small" value="خروج" />
+        </div>
+    </form>
+}
+

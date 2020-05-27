@@ -1,0 +1,75 @@
+﻿@model library1.Models.PaymentTransaction
+@{
+    ViewData["Title"] = "Payment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, library1
+
+<div>
+    @Html.Partial("_userpanel")
+</div>
+
+<div class="col-md-9">
+    <div class="top-buffer"></div>
+    <div class="panel div-cart">
+
+        <div class="panel-head">
+            <div class="col-md-3 title-medium">افزایش موجودی</div>
+        </div>
+
+        <hr class="break" />
+        <div class="panel-body">
+
+            <form method="post" asp-controller="Payment" asp-action="Payment" class="form-horizontal">
+
+                <div class="form-group">
+                    <label asp-for="Amount" class="col-lg-3 col-sm-3 control-label title-small"></label>
+                    <div class="col-lg-6">
+                        <input asp-for="Amount" class="form-control title-medium" />
+                        @*<span asp-validation-for="Amount" class="title-small"></span>*@
+                        <span class="title-small text-center">@Html.ValidationMessage("AmountError")</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Email" class="col-lg-3 col-sm-3 control-label title-small"></label>
+                    <div class="col-lg-6">
+                        <input asp-for="Email" class="form-control title-medium" />
+                        <span asp-validation-for="Email" class="title-small"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Mobile" class="col-lg-3 col-sm-3 control-label title-small"></label>
+                    <div class="col-lg-6">
+                        <input asp-for="Mobile" class="form-control title-medium" />
+                        <span asp-validation-for="Mobile" class="title-small"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Description" class="col-lg-3 col-sm-3 control-label title-small"></label>
+                    <div class="col-lg-6">
+                        <input asp-for="Description" class="form-control title-medium" />
+                        <span asp-validation-for="Description" class="title-small"></span>
+                    </div>
+                </div>
+
+                <div class="form-group" style="text-align:center;">
+                    <button type="submit" style="color:white; width:96px; height:32px;" class="btn btn-success title-medium">پرداخت</button>
+                </div>
+
+            </form>
+
+        </div>
+
+
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="~/js/myScript/menu panel admin.js"></script>
+
+}

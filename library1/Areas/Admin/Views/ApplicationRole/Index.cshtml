@@ -1,0 +1,93 @@
+﻿@model IEnumerable<library1.Models.ViewModel.ApplicationRoleViewModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, library1
+@using library1.PublicModel @* for AreaLabel ID, Size *@
+
+@{
+    ViewData["Title"] = "نقش های مجموعه";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    @Html.Partial("_adminpanel")
+</div>
+
+<div class="col-md-9">
+
+    <div class="top-buffer"></div>
+    <div class="panel div-cart">
+        <div class="panel-head title-medium">لیست نقش</div>
+        <hr class="break" />
+        <div class="panel-body">
+            <div class="btn-group">
+
+
+
+                <a class="btn btn-submit" id="showaddrole" data-toggle="modal" asp-action="AddEditRole"
+                   data-target="#modal-action-application-role">
+                    افزودن نقش
+                </a>
+
+
+
+            </div>
+
+            <div></div>
+            <table class="table table-bordered table-striped table-condensed>">
+                <thead>
+                    <tr>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.Name)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.Description)</th>
+                        <th class="title-small">@Html.DisplayNameFor(model => model.NumberOfUsers)</th>
+                        <th class="title-small">پردازش</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--Check null refrenced for Model-->
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="title-small">@item.Name</td>
+                                <td class="title-small">@item.Description</td>
+                                <td class="title-small">@item.NumberOfUsers</td>
+                                <td>
+                                    <a class="btn btn-edit" id="showEditRole" data-toggle="modal" asp-action="AddEditRole"
+                                       data-target="#modal-action-application-role" asp-route-id="@item.Id">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                    </a>
+                                    @if (item.NumberOfUsers == 0)
+                                    {
+                                        <a class="btn btn-cancel" id="showDeleteRole" data-toggle="modal" asp-action="DeleteRole"
+                                           data-target="#modal-action-application-role" asp-route-id="@item.Id">
+                                            <i class="glyphicon glyphicon-remove"></i>
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+@section Scripts{
+    <script src="~/lib/modal-js/application-role-index.js"></script>
+
+    <script src="~/js/myScript/menu panel admin.js"></script>
+}
+@* modal *@
+@Html.Partial("_Modal", new BootstrapModel { ID = "modal-action-application-role", AreaLabeledId = "", Size = ModalSize.Medium })
