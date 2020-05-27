@@ -28,8 +28,8 @@ namespace library1.Areas.User.Controllers
 
         private const int pagesize = 10;
 
-        public readonly string usernameAv = "09167189048";
-        public readonly string passwordAv = "123456";
+        public readonly string usernameAv = "َUserNameAvanak";
+        public readonly string passwordAv = "PassWordAvanak";
         public readonly int lenghtAv = 4;
         public int serveridAv = 20;
 
