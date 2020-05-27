@@ -79,7 +79,7 @@ namespace library1.Models
                         LockoutEnabled = true,
                         UserName = "admin",
                         NormalizedUserName = "ADMIN",
-                        // password : passWORD1996!?
+                        // password : **************
                         PasswordHash = "AQAAAAEAACcQAAAAENgFrB71A/cyVJ+9bbacZbl/B5m8n7ZUz58PLrwq2t/IuZ6UAfjDMbyfAhQWhvQN9Q==",
                         ConcurrencyStamp = "e81029bb-1f0e-4e7a-af39-3e8addb66122",
                         SecurityStamp = "VBGSDPHC64HP7IFCRGGBYPMDSCCTIY7Y"
