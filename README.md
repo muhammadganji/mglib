@@ -7,6 +7,8 @@ We can search book in library then request, after that We can go to library and 
 
 ### References
 * ASP.Net Core 3.1
+* MVC pattern
+* Service Repository
 * Entity framwork
 * Linq
 * Google authentication
@@ -24,3 +26,17 @@ We can search book in library then request, after that We can go to library and 
 
 ### 3. Persian Date Picker
 [`persian_date_picker` folder of project](https://github.com/lpln25/mglib/tree/master/library1/wwwroot/js/persian_date_picker)
+
+### 4. Service Repository
+[`Services` folder of project](https://github.com/lpln25/mglib/tree/master/library1/Services)
+
+### 5.Area Admin
+[`Admin` of project](https://github.com/lpln25/mglib/tree/master/library1/Areas/Admin)
+
+### 6. Area User
+[`User` of project](https://github.com/lpln25/mglib/tree/master/library1/Areas/User)
+
+### 7. Model - MVC pattern 
+['Models' of project](https://github.com/lpln25/mglib/tree/master/library1/Models)
+
+
