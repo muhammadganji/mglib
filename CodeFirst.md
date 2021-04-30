@@ -1,5 +1,4 @@
 # Code first in Asp.net core and React
----
 * Create new Template: **Asp.net core Web with React**
 * Install Library from **Nuget Package Manager**:
 ```sh
@@ -78,7 +77,7 @@ public class DbInitializer
 * set ConnectoinString in `appsettings.json`:
 ```json
 "ConnectionStrings": {
-    "DefaultConnection": "Data Source=localhost;Initial Catalog=mglibir_PersonDatabase1;User Id=persianmehr;Password=951357!Ass2"
+    "DefaultConnection": "Data Source=localhost;Initial Catalog=DATABASENAME;User Id=USERNAME;Password=PASSWORD"
   }
 ```
 * add database context to `Starup.cs`:
@@ -130,4 +129,14 @@ public class Program
         }
     }
 ```
+---
+# Plesk setting for database:
+after publish Application and zip it then, 
+* upload zip to folder of `httpdoc` and unzip it.
+* create new database with these Setting: name `DATABASENAME` and username `USERNAME` and password `PASSWORD`
+
+---
+**Enjoy from coding**
+این چالش نزدیک به دو ماه ازم وقت گرفت
+دهم اردیبهشت 1400
 
